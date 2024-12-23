@@ -1,6 +1,6 @@
 require_relative '../assignment'
 
-RSpec.describe '#add for string sum calculator' do
+RSpec.describe '#add' do
   it 'accepts exactly one argument' do
     expect(method(:add).arity).to eq(1)
   end
@@ -29,113 +29,131 @@ RSpec.describe '#add for string sum calculator' do
     end
   end
 
-  shared_examples 'a simple calculator' do
-    it 'should calculate sum for string with only default delimiter(,)' do
-      expect(add(',,,,')).to eq(0)
+  shared_context 'generic context' do
+    it 'returns 0 for a string with only delimiters' do
+      expect(add(',,,,')).to eq(10)
     end
 
-    it 'should calculate sum for an empty string' do
+    it 'returns 0 for an empty string' do
       expect(add('')).to eq(0)
     end
 
-    it 'should calculate sum for string with only delimiter(;)' do
-      expect(add(';;;;;')).to eq(0)
+    it 'returns 0 for a string with only non-default delimiters' do
+      expect(add('//;;^^^^!;;;')).to eq(0)
     end
 
-    it 'should calculate sum for string with only delimiter(;)' do
-      expect(add('//;;,;;;;;')).to eq(0)
-    end
-
-    it 'should calculate sum for string with no numbers' do
+    it 'returns 0 for a string with no integers' do
       expect(add(';;;xadada()!,-+;;')).to eq(0)
-    end
-
-    it 'should calculate sum for a long random string' do
-      expect(add('//; 1;; 2 \t 3;;4, 5, 6;;7 ;!8b 9;10 \\n11;;12; &!b13')).to eq(1612)
     end
   end
 
-  context 'recieving string input' do
-    context 'without delimiter' do
-      it_behaves_like 'a simple calculator'
+  context 'recieving a string paramater' do
+    context 'with default delimiter' do
+      context 'should calculate the sum of integers in' do
+        it 'a simple string' do
+          expect(add('1, 5, 3')).to eq(9)
+        end
 
-      it 'should calculate sum for simple string' do
-        expect(add('1, 5, 3')).to eq(9)
+        it 'a string with spaces at begining/end' do
+          expect(add('  //,1, 5, 3  ')).to eq(9)
+        end
+
+        it 'a string with newlines' do
+          expect(add("\n1, \n5, \n\n3")).to eq(9)
+        end
+
+        it 'a string with newtabs' do
+          expect(add("\t1, \t5, \t\t3")).to eq(9)
+        end
+
+        it 'a string with alphabets' do
+          expect(add('a1, b5, c3')).to eq(9)
+        end
+
+        it 'a with special characters' do
+          expect(add('#1, %^5, &!3')).to eq(9)
+        end
+
+        it 'a with newlines, newtabs, alphabets, special characters' do
+          expect(add('\n1, \t5, &!b3')).to eq(9)
+        end
+
+        it 'a with multiple delimters' do
+          expect(add('\n1,,,\t5, &!b3')).to eq(9)
+        end
       end
 
-      it 'should calculate sum for string with newlines' do
-        expect(add("\n1, \n5, \n\n3")).to eq(9)
+      context 'should raise error for' do
+        it 'a string with only negative numbers' do
+          expect { add('-1, -5, -3') }.to raise_error(NegativeNumbersError, /negative numbers not allowed -1, -5, -3/)
+        end
+
+        it 'a string with some negative numbers' do
+          expect { add('\n1, \t-5, &!b-3') }.to raise_error(NegativeNumbersError, /negative numbers not allowed -5, -3/)
+        end
       end
 
-      it 'should calculate sum for string with newtabs' do
-        expect(add("\t1, \t5, \t\t3")).to eq(9)
-      end
-
-      it 'should calculate sum for string with alphabets' do
-        expect(add('a1, b5, c3')).to eq(9)
-      end
-
-      it 'should calculate sum for string with special characters' do
-        expect(add('#1, %^5, &!3')).to eq(9)
-      end
-
-      it 'should calculate sum for string with newlines, newtabs, alphabets, special characters' do
-        expect(add('\n1, \t5, &!b3')).to eq(9)
-      end
-
-      it 'should raise error for string with negative numbers' do
-        expect { add('\n1, \t-5, &!b-3') }.to raise_error(NegativeNumbersError, /negative numbers not allowed -5, -3/)
-      end
-
-      it 'should calculate sum for string with multiple delimters' do
-        expect(add('\n1,,,\t5, &!b3')).to eq(9)
-      end
+      include_context 'generic context'
     end
 
-    context 'with delimter (;)' do
-      it_behaves_like 'a simple calculator'
+    context 'with a delimter (;)' do
+      context 'should calculate the sum of integers in' do
+        it 'a simple string' do
+          expect(add('//;1; 5; 3')).to eq(9)
+        end
 
-      it 'should calculate sum for simple string' do
-        expect(add('//;1; 5; 3')).to eq(9)
+        it 'in a string with space at begining/end' do
+          expect(add('  //;1; 5; 3  ')).to eq(9)
+        end
+
+        it 'in a string with newlines' do
+          expect(add("//;\n1; \n5; \n\n3")).to eq(9)
+        end
+
+        it 'in a string with newtabs' do
+          expect(add("//;\t1; \t5; \t\t3")).to eq(9)
+        end
+
+        it 'in a string with alphabets' do
+          expect(add('//;a1; b5; c3')).to eq(9)
+        end
+
+        it 'a string with special characters' do
+          expect(add('//;#1; %^5; &!3')).to eq(9)
+        end
+
+        it 'a string with newlines, newtabs, alphabets, special characters' do
+          expect(add("//;\n1; \t5; &!b3")).to eq(9)
+        end
+
+        it 'a string with multiple delimters' do
+          expect(add("//;\n1;;;\t5; &!b3")).to eq(9)
+        end
+
+        it 'a string with default delimter' do
+          expect(add("//;\,,,,n1;;;\t5; &!b3")).to eq(9)
+        end
+
+        it 'in a string with empty spaces' do
+          expect(add("//;\     ,n   1;;;\t5; &!b3")).to eq(9)
+        end
       end
 
-      it 'should calculate sum for string with newlines' do
-        expect(add("//;\n1; \n5; \n\n3")).to eq(9)
+      context 'should raise error for' do
+        it 'a string with negative numbers' do
+          expect do
+            add("//;\n1; \t-5; &!b-3")
+          end.to raise_error(NegativeNumbersError, /negative numbers not allowed -5, -3/)
+        end
+
+        it 'a string with only negative numbers' do
+          expect do
+            add('//;-1; -5; -3')
+          end.to raise_error(NegativeNumbersError, /negative numbers not allowed -1, -5, -3/)
+        end
       end
 
-      it 'should calculate sum for string with newtabs' do
-        expect(add("//;\t1; \t5; \t\t3")).to eq(9)
-      end
-
-      it 'should calculate sum for string with alphabets' do
-        expect(add('//;a1; b5; c3')).to eq(9)
-      end
-
-      it 'should calculate sum for string with special characters' do
-        expect(add('//;#1; %^5; &!3')).to eq(9)
-      end
-
-      it 'should calculate sum for string with newlines, newtabs, alphabets, special characters' do
-        expect(add("//;\n1; \t5; &!b3")).to eq(9)
-      end
-
-      it 'should raise error for string with negative numbers' do
-        expect do
-          add("//;\n1; \t-5; &!b-3")
-        end.to raise_error(NegativeNumbersError, /negative numbers not allowed -5, -3/)
-      end
-
-      it 'should calculate sum for string with multiple delimters' do
-        expect(add("//;\n1;;;\t5; &!b3")).to eq(9)
-      end
-
-      it 'should calculate sum for string with default delimter' do
-        expect(add("//;\,,,,n1;;;\t5; &!b3")).to eq(9)
-      end
-
-      it 'should calculate sum for string with empty spaces' do
-        expect(add("//;\     ,n   1;;;\t5; &!b3")).to eq(9)
-      end
+      include_context 'generic context'
     end
   end
 end

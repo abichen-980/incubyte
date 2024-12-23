@@ -1,3 +1,4 @@
+require 'byebug'
 # frozen_string_literal: true
 
 # passing negative numbers should throw an error with negative numbers passed.
@@ -5,7 +6,7 @@ class NegativeNumbersError < StandardError
 end
 
 def add(input_string)
-  input_string = input_string.to_s
+  input_string = input_string.to_s.strip
   numbers = extract_numbers(input_string)
   return 0 if numbers.empty?
 
