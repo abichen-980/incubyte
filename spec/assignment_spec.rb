@@ -1,6 +1,6 @@
 require_relative '../assignment'
 
-RSpec.describe '#add' do
+RSpec.describe '#add for string sum calculator' do
   it 'accepts exactly one argument' do
     expect(method(:add).arity).to eq(1)
   end
@@ -29,8 +29,32 @@ RSpec.describe '#add' do
     end
   end
 
-  context 'recieving input' do
+  shared_examples 'a simple calculator' do
+    it 'should calculate sum for string with only default delimiter(,)' do
+      expect(add(',,,,')).to eq(0)
+    end
+
+    it 'should calculate sum for an empty string' do
+      expect(add('')).to eq(0)
+    end
+
+    it 'should calculate sum for string with only delimiter(;)' do
+      expect(add(';;;;;')).to eq(0)
+    end
+
+    it 'should calculate sum for string with only delimiter(;)' do
+      expect(add('//;;,;;;;;')).to eq(0)
+    end
+
+    it 'should calculate sum for string with no numbers' do
+      expect(add(';;;xadada()!,-+;;')).to eq(0)
+    end
+  end
+
+  context 'recieving string input' do
     context 'without delimter' do
+      it_behaves_like 'a simple calculator'
+
       it 'should calculate sum for simple string' do
         expect(add('1, 5, 3')).to eq(9)
       end
@@ -65,6 +89,8 @@ RSpec.describe '#add' do
     end
 
     context 'with delimter (;)' do
+      it_behaves_like 'a simple calculator'
+
       it 'should calculate sum for simple string' do
         expect(add('//;1; 5; 3')).to eq(9)
       end
