@@ -49,10 +49,14 @@ RSpec.describe '#add for string sum calculator' do
     it 'should calculate sum for string with no numbers' do
       expect(add(';;;xadada()!,-+;;')).to eq(0)
     end
+
+    it 'should calculate sum for a long random string' do
+      expect(add('//; 1;; 2 \t 3;;4, 5, 6;;7 ;!8b 9;10 \\n11;;12; &!b13')).to eq(1612)
+    end
   end
 
   context 'recieving string input' do
-    context 'without delimter' do
+    context 'without delimiter' do
       it_behaves_like 'a simple calculator'
 
       it 'should calculate sum for simple string' do

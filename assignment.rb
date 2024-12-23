@@ -40,6 +40,7 @@ def sanitize_with_delimiter(input_string, delimiter)
   input_string.gsub(/\\n|\\t/, ' ').gsub(/[^0-9#{Regexp.escape(delimiter)}-]/, '')
 end
 
+# currently it handles only one character delimiter
 def determine_delimiter(input_string)
   input_string.start_with?('//') ? input_string[2] : ','
 end
