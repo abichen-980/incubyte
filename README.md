@@ -1,3 +1,5 @@
+
+
 Create a simple String calculator with a method signature like this:
 int add(string numbers)
 Input: a string of comma-separated numbers
@@ -18,4 +20,6 @@ Calling add with a negative number will throw an exception: "negative numbers no
 
 If there are multiple negative numbers, show all of them in the exception message, separated by commas.
 
-PLEASE NOTE: IT NOW ONLY HANDLES ONE CHARECTER DELIMITER.
+PLEASE NOTE:
+CLASS BASED APPROACH WAS THE BEST APPROACH, BUT AS PER THE QUESTION IT WAS ONLY EXPECTING A SIMPLE METHOD.
+IT NOW ONLY HANDLES ONE CHARECTER DELIMITER.
