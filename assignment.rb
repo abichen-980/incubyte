@@ -1,4 +1,3 @@
-require 'byebug'
 # frozen_string_literal: true
 
 # passing negative numbers should throw an error with negative numbers passed.
