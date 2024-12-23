@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # passing negative numbers should throw an error with negative numbers passed.
+require 'byebug'
 class NegativeNumbersError < StandardError
 end
 
@@ -36,7 +37,7 @@ def extract_numbers(input_string)
 end
 
 def extract_delimiter_and_sanitize(input_string)
-  input_string.gsub(/[^0-9,]/, '')
+  input_string.gsub(/\\n|\\t/, ' ').gsub(/[^0-9,-]/, '')
 end
 
 def unwanted_characters_regex(delimiter)
