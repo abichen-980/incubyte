@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # passing negative numbers should throw an error with negative numbers passed.
-require 'byebug'
 class NegativeNumbersError < StandardError
 end
 
@@ -10,12 +9,12 @@ def add(input_string)
   numbers = extract_numbers(input_string)
   return 0 if numbers.empty?
 
-  validate_and_sum_numbers(numbers)
+  validate_and_calculate_sum(numbers)
 end
 
 private
 
-def validate_and_sum_numbers(numbers)
+def validate_and_calculate_sum(numbers)
   numbers_sum = 0
   negatives = []
 
@@ -32,14 +31,15 @@ def validate_and_sum_numbers(numbers)
 end
 
 def extract_numbers(input_string)
-  sanitized_input = extract_delimiter_and_sanitize(input_string)
-  sanitized_input.split(',').map(&:to_i)
+  delimiter = determine_delimiter(input_string)
+  sanitized_input = sanitize_with_delimiter(input_string, delimiter)
+  sanitized_input.split(delimiter).map(&:to_i)
 end
 
-def extract_delimiter_and_sanitize(input_string)
-  input_string.gsub(/\\n|\\t/, ' ').gsub(/[^0-9,-]/, '')
+def sanitize_with_delimiter(input_string, delimiter)
+  input_string.gsub(/\\n|\\t/, ' ').gsub(/[^0-9#{Regexp.escape(delimiter)}-]/, '')
 end
 
-def unwanted_characters_regex(delimiter)
-  /[^-?\d#{Regexp.escape(delimiter)}\s]/
+def determine_delimiter(input_string)
+  input_string.start_with?('//') ? input_string[2] : ','
 end
