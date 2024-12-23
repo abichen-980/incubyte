@@ -31,5 +31,14 @@ def validate_and_sum_numbers(numbers)
 end
 
 def extract_numbers(input_string)
-  input_string.to_s
+  sanitized_input = extract_delimiter_and_sanitize(input_string)
+  sanitized_input.split(',').map(&:to_i)
+end
+
+def extract_delimiter_and_sanitize(input_string)
+  input_string.gsub(/[^0-9,]/, '')
+end
+
+def unwanted_characters_regex(delimiter)
+  /[^-?\d#{Regexp.escape(delimiter)}\s]/
 end
