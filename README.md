@@ -21,6 +21,8 @@ Calling add with a negative number will throw an exception: "negative numbers no
 If there are multiple negative numbers, show all of them in the exception message, separated by commas.
 
 PLEASE NOTE:
+
+
 CLASS BASED APPROACH WAS THE BEST APPROACH, BUT AS PER THE QUESTION IT WAS ONLY EXPECTING A SIMPLE METHOD.
 
 
